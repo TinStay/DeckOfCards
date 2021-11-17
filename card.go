@@ -1,3 +1,9 @@
+//go:generate stringer -type=Suit,Rank
+
+package deck
+
+import "fmt"
+
 type Suit uint8
 
 const (
@@ -5,15 +11,18 @@ const (
 	Diamond
 	Club
 	Heart
-	Joker
+	Joker // Special case
 )
 
-type Rank uint8 
+var suits = [...]Suit{Spade, Diamond, Club, Heart}
+
+type Rank uint8
 
 const (
 	_ Rank = iota
-	Ace,
-	Two,
+	Ace
+	Two
+	Three
 	Four
 	Five
 	Six
@@ -26,8 +35,33 @@ const (
 	King
 )
 
+const (
+	minRank = Ace
+	maxRank = King
+)
+
 type Card struct {
 	Suit
-	Rank 
+	Rank
 }
 
+func (c Card) String() string {
+	if c.Suit == Joker {
+		return c.Suit.String()
+	}
+	return fmt.Sprintf("%s of %ss", c.Rank.String(), c.Suit.String())
+}
+
+func NewDeck() []Card {
+	var cards []Card
+
+	// Add all cards for each suit
+	for _, suit := range suits {
+		for rank := minRank; rank <= maxRank; rank++ {
+			cards = append(cards, Card{Suit: suit, Rank: rank})
+		}
+	}
+
+
+	return cards
+}
