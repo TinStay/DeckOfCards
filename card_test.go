@@ -28,3 +28,21 @@ func TestNew(t *testing.T){
 	}
 	
 }
+// Sorting
+func TestDefaultSort(t *testing.T) {
+	cards := NewDeck(DefaultSort)
+	exp := Card{Rank: Ace, Suit: Spade}
+
+	if cards[0] != exp{
+		t.Error("Expected Ace of Spades: Receiced:", cards[0])
+	}
+}
+
+func TestSort(t *testing.T) {
+	cards := NewDeck(Sort(Less))
+	exp := Card{Rank: Ace, Suit: Spade}
+
+	if cards[0] != exp{
+		t.Error("Expected Ace of Spades: Receiced:", cards[0])
+	}
+}
