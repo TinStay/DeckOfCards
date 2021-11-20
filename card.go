@@ -4,6 +4,7 @@ package deck
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
 )
 
@@ -94,4 +95,28 @@ func Less(cards []Card) func(i, j int) bool {
 
 func absRank(c Card) int {
 	return int(c.Suit)*int(maxRank) + int(c.Rank)
+}
+
+func Shuffle(cards []Card) []Card {
+	ret := make([]Card, len(cards))
+	newOrder := rand.Perm(len(cards)) // [1, 2, 3] -> [2, 1, 3]
+
+	// Shuffling
+	for idx, orderNumber := range newOrder {
+		ret[idx] = cards[orderNumber]
+	}
+
+	return ret
+}
+
+func Jokers(n int) func([]Card) []Card {
+	return func(cards []Card) []Card{
+		for i := 0; i < n; i++{
+			cards = append(cards, Card{
+				Rank: Rank(i),
+				Suit: Joker,
+			})
+		}
+		return cards
+	}
 }
