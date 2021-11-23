@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand"
 	"sort"
+	"time"
 )
 
 type Suit uint8
@@ -97,9 +98,11 @@ func absRank(c Card) int {
 	return int(c.Suit)*int(maxRank) + int(c.Rank)
 }
 
+var shuffleRand = rand.New(rand.NewSource(time.Now().Unix()))
+
 func Shuffle(cards []Card) []Card {
 	ret := make([]Card, len(cards))
-	newOrder := rand.Perm(len(cards)) // [1, 2, 3] -> [2, 1, 3]
+	newOrder := shuffleRand.Perm(len(cards)) // [1, 2, 3] -> [2, 1, 3]
 
 	// Shuffling
 	for idx, orderNumber := range newOrder {

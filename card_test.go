@@ -2,6 +2,7 @@ package deck
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
 )
 
@@ -48,11 +49,22 @@ func TestSort(t *testing.T) {
 }
 
 func TestShuffle(t *testing.T) {
+	// First call to shuffleRand.Perm(52) should be: [40 35 ...]
+	// make shuffleRand deterministic
+	shuffleRand = rand.New(rand.NewSource(0))
+
+	// Create decks
 	cards := NewDeck()
 	shuffled := Shuffle(cards)
 
-	if cards[0] == shuffled[0]{
-		t.Error("Cards not shuffled properly")
+	first := cards[40]
+	second := cards[35]
+
+	if first != shuffled[0]{
+		t.Errorf("Expected %s. Received: %s", first, shuffled[0])
+	} 
+	if second != shuffled[1]{
+		t.Errorf("Expected %s. Received: %s", second, shuffled[1])
 	} 
 }
 
